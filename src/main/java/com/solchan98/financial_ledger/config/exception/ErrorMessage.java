@@ -1,13 +1,11 @@
 package com.solchan98.financial_ledger.config.exception;
 
 import com.solchan98.financial_ledger.config.Status;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class ErrorMessage {
     private Status status;
     private String msg;
