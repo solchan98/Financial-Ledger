@@ -1,16 +1,52 @@
 package com.solchan98.financial_ledger.account;
 
+import com.solchan98.financial_ledger.account.domain.Account;
+import com.solchan98.financial_ledger.account.domain.AccountRepository;
+import com.solchan98.financial_ledger.account.domain.dto.SignUp;
+import com.solchan98.financial_ledger.account.service.AccountService;
+import com.solchan98.financial_ledger.config.Status;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SpringBootTest
+import static com.solchan98.financial_ledger.account.AccountTemplate.makeSignUpAccount;
+import static com.solchan98.financial_ledger.account.AccountTemplate.makeTestAccount;
+import static org.mockito.BDDMockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
 public class AccountServiceTest {
+
+    @Mock
+    private AccountRepository accountRepository;
+
+    @InjectMocks
+    private AccountService accountService;
+
+    static Account account = makeTestAccount();
+    static SignUp.Request signUpRequest = makeSignUpAccount();
 
     @Test
     @DisplayName("회원가입 성공")
     void signUpSuccess() {
-
+        // given
+        SignUp.Response mockResponse = SignUp.Response.builder()
+                .name(account.getName()).email(account.getEmail()).password(account.getPassword())
+                .build();
+        /// mocking
+        given(accountRepository.save(any())).willReturn(account);
+        // when
+        SignUp.Response signUpResponse = accountService.signUp(signUpRequest);
+        // then
+        assertAll(
+                () ->assertEquals(mockResponse.getEmail(), signUpResponse.getEmail()),
+                () ->assertEquals(mockResponse.getPassword(), signUpResponse.getPassword()),
+                () ->assertEquals(mockResponse.getName(), signUpResponse.getName()),
+                () -> assertEquals(Status.SIGN_UP_OK, signUpResponse.getStatus())
+        );
     }
 
     @Test

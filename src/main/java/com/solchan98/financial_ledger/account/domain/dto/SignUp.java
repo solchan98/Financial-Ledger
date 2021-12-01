@@ -1,5 +1,6 @@
 package com.solchan98.financial_ledger.account.domain.dto;
 
+import com.solchan98.financial_ledger.config.Status;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -23,6 +24,7 @@ public class SignUp {
         private String name;
         private String password;
         private LocalDateTime loginAt;
+        private Status status;
     }
 
 }
