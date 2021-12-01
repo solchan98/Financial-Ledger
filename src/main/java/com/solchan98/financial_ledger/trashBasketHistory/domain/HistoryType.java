@@ -4,5 +4,8 @@ public enum HistoryType {
     DELETE(0, "DELETE"),
     RECOVERY(1, "RECOVERY");
 
-    HistoryType(int index, String delete) {}
+    int index;
+    String type;
+
+    HistoryType(int index, String type) {}
 }
