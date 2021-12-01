@@ -14,16 +14,21 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static com.solchan98.financial_ledger.account.AccountTemplate.*;
 import static org.mockito.BDDMockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
+@DisplayName("유저 서비스로직 테스트")
 public class AccountServiceTest {
 
     @Mock
     private AccountRepository accountRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private AccountService accountService;
@@ -35,12 +40,12 @@ public class AccountServiceTest {
         Account account = makeTestAccount();
         SignUp.Request signUpRequest = makeSignUpAccount();
         given(accountRepository.save(any())).willReturn(account);
+        given(passwordEncoder.encode(any())).willReturn(account.getPassword());
         // when
         SignUp.Response signUpResponse = accountService.signUp(signUpRequest);
         // then
         assertAll(
                 () ->assertEquals(account.getEmail(), signUpResponse.getEmail()),
-                () ->assertEquals(account.getPassword(), signUpResponse.getPassword()),
                 () ->assertEquals(account.getName(), signUpResponse.getName()),
                 () -> assertEquals(Status.SIGN_UP_OK, signUpResponse.getStatus())
         );
@@ -54,7 +59,7 @@ public class AccountServiceTest {
         SignUp.Request signUpRequest = makeSignUpAccount();
         given(accountRepository.existsByEmail(account.getEmail())).willReturn(true);
         // when then
-        assertThrows(InvalidEmailException.class, () -> accountService.signUp(signUpRequest));
+        assertThrows(DuplicateEmailException.class, () -> accountService.signUp(signUpRequest));
     }
 
     @Test
@@ -63,7 +68,7 @@ public class AccountServiceTest {
         // given
         SignUp.Request signUpInvalidEmail = makeSignUpInvalidEmail();
         // when then
-        assertThrows(DuplicateEmailException.class, () -> accountService.signUp(signUpInvalidEmail));
+        assertThrows(InvalidEmailException.class, () -> accountService.signUp(signUpInvalidEmail));
     }
 
     @Test

@@ -8,8 +8,8 @@ public class AccountTemplate {
 
     public static final String EMAIL = "sol@gmail.com";
     public static final String INVALID_EMAIL = "sol";
-    public static final String PASSWORD = "12345689";
-    public static final String INVALID_PASSWORD = "1234";
+    public static final String PASSWORD = "a1234567";
+    public static final String INVALID_PASSWORD = "a1234";
     public static final String NAME = "solchan";
 
     private static final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -30,7 +30,7 @@ public class AccountTemplate {
 
     public static SignUp.Request makeSignUpInvalidPassword(){
         return SignUp.Request
-                .builder().name(NAME).email(INVALID_EMAIL).password(INVALID_PASSWORD).build();
+                .builder().name(NAME).email(EMAIL).password(INVALID_PASSWORD).build();
     }
 
 }
