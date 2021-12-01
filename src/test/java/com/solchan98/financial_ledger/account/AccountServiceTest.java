@@ -33,18 +33,14 @@ public class AccountServiceTest {
     @DisplayName("회원가입 성공")
     void signUpSuccess() {
         // given
-        SignUp.Response mockResponse = SignUp.Response.builder()
-                .name(account.getName()).email(account.getEmail()).password(account.getPassword())
-                .build();
-        /// mocking
         given(accountRepository.save(any())).willReturn(account);
         // when
         SignUp.Response signUpResponse = accountService.signUp(signUpRequest);
         // then
         assertAll(
-                () ->assertEquals(mockResponse.getEmail(), signUpResponse.getEmail()),
-                () ->assertEquals(mockResponse.getPassword(), signUpResponse.getPassword()),
-                () ->assertEquals(mockResponse.getName(), signUpResponse.getName()),
+                () ->assertEquals(account.getEmail(), signUpResponse.getEmail()),
+                () ->assertEquals(account.getPassword(), signUpResponse.getPassword()),
+                () ->assertEquals(account.getName(), signUpResponse.getName()),
                 () -> assertEquals(Status.SIGN_UP_OK, signUpResponse.getStatus())
         );
     }
