@@ -52,10 +52,15 @@ public class Ledger {
         this.updateAt = LocalDateTime.now();
     }
 
-    public void deleteAccount() {
+    public void addTrashBasket(TrashBasketHistory history) {
+        this.historyList.add(history);
+        history.addLedger(this);
+    }
+
+    public void deleteLedger() {
         this.isDelete = true;
     }
-    public void restoreAccount() {
+    public void restoreLedger() {
         this.isDelete = false;
     }
 }
