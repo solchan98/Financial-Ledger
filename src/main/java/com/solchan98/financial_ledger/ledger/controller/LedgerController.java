@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/ledger")
@@ -26,13 +29,26 @@ public class LedgerController {
         return ResponseEntity.ok().body(message);
     }
 
-    @GetMapping("/restore/{ledgerId}")
-    public LedgerDto.Response restoreLedger(@PathVariable Long ledgerId) {
-        return ledgerService.restoreLedger(AccountUtil.getAccount(), ledgerId);
-    }
-
     @PatchMapping("/")
     public LedgerDto.Response updateLedger(@RequestBody LedgerDto.UpdateRequest request) {
         return ledgerService.updateLedger(AccountUtil.getAccount(), request);
+    }
+
+    @GetMapping("/{ledgerId}")
+    public LedgerDto.Response getLedger(@PathVariable Long ledgerId) {
+//        return ledgerService.getLedger(AccountUtil.getAccount(), ledgerId);
+        return null;
+    }
+
+    @GetMapping("/{ledgerId}")
+    public List<LedgerDto.SimpleResponse> getLedgerList() {
+//        return ledgerService.getLedgerList(AccountUtil.getAccount());
+        return null;
+    }
+
+    @GetMapping("")
+    public List<LedgerDto.SimpleResponse> getLedgerListByDate(@RequestParam String date) {
+//        return ledgerService.getLedgerListByDate(AccountUtil.getAccount(), date);
+        return null;
     }
 }
