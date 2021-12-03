@@ -15,6 +15,7 @@ public class AccountContent {
     public static final String USER_NOT_FOUND = "회원이 존재하지 않습니다.";
 
     public static final String EXPIRED_TOKEN = "토큰이 만료되었습니다.";
-    public static final String MALFORMED_TOKEN = "토큰을 확인해주세요.";
+    public static final String MALFORMED_TOKEN = "JWT가 아닙니다. 토큰을 확인해주세요.";
     public static final String EMPTY_TOKEN = "로그인이 필요합니다. 요청 토큰을 확인해주세요.";
+    public static final String LOGOUT_OK = "성공적으로 로그아웃 되었습니다.";
 }

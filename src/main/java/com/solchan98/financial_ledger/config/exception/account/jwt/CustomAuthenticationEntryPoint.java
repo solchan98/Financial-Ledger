@@ -3,7 +3,7 @@ package com.solchan98.financial_ledger.config.exception.account.jwt;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solchan98.financial_ledger.config.Status;
-import com.solchan98.financial_ledger.config.exception.ErrorMessage;
+import com.solchan98.financial_ledger.config.exception.Message;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -24,7 +24,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         String exception = (String) request.getAttribute("exception");
         setResponse(response);
-        ErrorMessage error = ErrorMessage.builder().msg(exception).status(Status.ACCESS_TOKEN_INVALID).build();
+        Message error = Message.builder().msg(exception).status(Status.ACCESS_TOKEN_INVALID).build();
         response.getWriter().print(convertObjectToJson(error));
     }
 

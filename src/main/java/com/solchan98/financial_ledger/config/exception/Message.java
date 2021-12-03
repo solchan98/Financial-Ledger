@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class ErrorMessage {
+public class Message {
     private Status status;
     private String msg;
 }

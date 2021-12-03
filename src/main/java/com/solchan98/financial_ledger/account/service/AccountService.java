@@ -27,7 +27,12 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final RedisTemplate redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
+
+    public void logout(Account account, String accessToken) {
+        setBlackListAccessToken(accessToken.substring(7));
+        redisTemplate.delete(account.getEmail());
+    }
 
     public Login.RefreshToken getNewRefresh(String accountEmail, String refreshToken) {
         ValueOperations<String, String> values = redisTemplate.opsForValue();
@@ -92,5 +97,13 @@ public class AccountService {
         redisTemplate.delete(accountEmail);
         setRefreshInRedis(account, newRefreshToken);
         return newRefreshToken;
+    }
+
+    private void setBlackListAccessToken(String accessToken) {
+        ValueOperations<String, String> values = redisTemplate.opsForValue();
+        long expiration = jwtTokenProvider.getExpiration(accessToken).getTime() - System.currentTimeMillis();
+        if(expiration > 0) {
+            values.set(accessToken, "BlackList", Duration.ofMillis(expiration));
+        }
     }
 }

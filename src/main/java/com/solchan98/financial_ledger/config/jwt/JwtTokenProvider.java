@@ -5,9 +5,12 @@ import com.solchan98.financial_ledger.config.content.AccountContent;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -27,6 +31,7 @@ public class JwtTokenProvider {
     private long refreshTokenValidTime = 3 * 24 * 60 * 60 * 1000L; // 3day
 
     private final CustomUserDetailService customUserDetailService;
+    private final RedisTemplate<String, String> redisTemplate;
 
     // 의존성 주입 후, 초기화를 수행
     // 객체 초기화, secretKey를 Base64로 인코딩한다.
@@ -76,10 +81,15 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(HttpServletRequest request, String jwtToken) {
+        ValueOperations<String, String> operations = redisTemplate.opsForValue();
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            Optional<String> isBlackList = Optional.ofNullable(operations.get(jwtToken));
+            if(isBlackList.isPresent()) {
+                throw new UsernameNotFoundException(AccountContent.EXPIRED_TOKEN);// 로그아웃 된 토큰요청 예외
+            }
             return !claims.getBody().getExpiration().before(new Date());
-        } catch (ExpiredJwtException e) {
+        } catch (ExpiredJwtException | UsernameNotFoundException e) {
             request.setAttribute("exception", AccountContent.EXPIRED_TOKEN);
             return false;
         } catch (MalformedJwtException e) {
