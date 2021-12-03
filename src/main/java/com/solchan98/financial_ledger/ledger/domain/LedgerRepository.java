@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface LedgerRepository extends JpaRepository<Ledger, Long> {
     Optional<Ledger> findByIdAndIsDeleteIsFalse(Long id);
+    Optional<Ledger> findByIdAndIsDeleteIsTrue(Long id);
 }

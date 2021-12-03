@@ -28,7 +28,6 @@ public class LedgerController {
 
     @GetMapping("/restore/{ledgerId}")
     public LedgerDto.Response restoreLedger(@PathVariable Long ledgerId) {
-//        ledgerService.restoreLedger();
-        return null;
+        return ledgerService.restoreLedger(AccountUtil.getAccount(), ledgerId);
     }
 }

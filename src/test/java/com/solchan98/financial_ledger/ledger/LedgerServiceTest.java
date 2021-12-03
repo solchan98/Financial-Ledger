@@ -109,11 +109,11 @@ public class LedgerServiceTest {
         given(ledgerRepository.findByIdAndIsDeleteIsTrue(any())).willReturn(Optional.ofNullable(ledger));
         given(account.getId()).willReturn(1L);
         // when
-        Message message = ledgerService.restoreLedger(account, ledger.getId());
+        LedgerDto.Response response = ledgerService.restoreLedger(account, ledger.getId());
         // then
         assertAll(
-                () -> assertEquals(Status.RESTORE_LEDGER_OK, message.getStatus()),
-                () -> assertEquals(LedgerContent.RESTORE_LEDGER_OK, message.getMsg())
+                () -> assertEquals(Status.RESTORE_LEDGER_OK, response.getMessage().getStatus()),
+                () -> assertEquals(LedgerContent.RESTORE_LEDGER_OK, response.getMessage().getMsg())
         );
     }
 
@@ -123,7 +123,7 @@ public class LedgerServiceTest {
         // given
         Account account2 = mock(Account.class);
         Ledger ledger = LedgerTemplate.makeLedger(account2);
-        given(ledgerRepository.findByIdAndIsDeleteIsFalse(any())).willReturn(Optional.ofNullable(ledger));
+        given(ledgerRepository.findByIdAndIsDeleteIsTrue(any())).willReturn(Optional.ofNullable(ledger));
         given(account.getId()).willReturn(1L);
         given(account2.getId()).willReturn(2L);
         // when then
