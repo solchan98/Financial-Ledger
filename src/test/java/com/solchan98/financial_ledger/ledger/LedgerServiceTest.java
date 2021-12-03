@@ -6,6 +6,7 @@ import com.solchan98.financial_ledger.config.Status;
 import com.solchan98.financial_ledger.config.content.LedgerContent;
 import com.solchan98.financial_ledger.config.exception.Message;
 import com.solchan98.financial_ledger.config.exception.ledger.BadRequestCreateLedgerException;
+import com.solchan98.financial_ledger.config.exception.ledger.BadRequestLedgerException;
 import com.solchan98.financial_ledger.ledger.domain.Ledger;
 import com.solchan98.financial_ledger.ledger.domain.LedgerRepository;
 import com.solchan98.financial_ledger.ledger.domain.dto.LedgerDto;
@@ -33,6 +34,7 @@ public class LedgerServiceTest {
     @InjectMocks
     private LedgerService ledgerService;
 
+    @Mock
     static Account account = AccountTemplate.makeTestAccount();
 
     @Test
@@ -75,13 +77,29 @@ public class LedgerServiceTest {
     void deleteLedGerSuccess() {
         // given
         Ledger ledger = LedgerTemplate.makeLedger(account);
-        given(ledgerRepository.findById(any())).willReturn(Optional.ofNullable(ledger));
+        given(ledgerRepository.findByIdAndIsDeleteIsFalse(any())).willReturn(Optional.ofNullable(ledger));
+        given(account.getId()).willReturn(1L);
         // when
-        Message message = ledgerService.deleteLedger(account, any());
+        Message message = ledgerService.deleteLedger(account, ledger.getId());
         // then
         assertAll(
                 () -> assertEquals(Status.DELETE_LEDGER_OK, message.getStatus()),
                 () -> assertEquals(LedgerContent.DELETE_LEDGER_OK, message.getMsg())
         );
     }
+
+    @Test
+    @DisplayName("가계부 내역 삭제 실패 - 잘못된 내역 ID")
+    void deleteLedGerFailByInvalidLedgerId() {
+        // given
+        Account account2 = mock(Account.class);
+        Ledger ledger = LedgerTemplate.makeLedger(account2);
+        given(ledgerRepository.findByIdAndIsDeleteIsFalse(any())).willReturn(Optional.ofNullable(ledger));
+        given(account.getId()).willReturn(1L);
+        given(account2.getId()).willReturn(2L);
+        // when then
+        assertThrows(BadRequestLedgerException.class, () -> ledgerService.deleteLedger(account, ledger.getId()));
+    }
+
+
 }
