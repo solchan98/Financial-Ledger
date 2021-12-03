@@ -1,5 +1,7 @@
 package com.solchan98.financial_ledger.ledger.domain.dto;
 
+import com.solchan98.financial_ledger.config.Status;
+import com.solchan98.financial_ledger.config.content.LedgerContent;
 import com.solchan98.financial_ledger.config.exception.Message;
 import com.solchan98.financial_ledger.ledger.domain.Ledger;
 import lombok.Builder;
@@ -7,6 +9,7 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class LedgerDto {
 
@@ -64,4 +67,18 @@ public class LedgerDto {
                     .build();
         }
     }
+    @Getter
+    @Builder
+    public static class ListResponse {
+        private List<SimpleResponse> data;
+        private Message message;
+
+        public static LedgerDto.ListResponse getLedgerSimpleResponse(List<SimpleResponse> data) {
+            return ListResponse.builder()
+                    .data(data)
+                    .message(Message.builder().msg(LedgerContent.GET_LEDGER_LIST_OK).status(Status.LEDGER_OK).build())
+                    .build();
+        }
+    }
+
 }

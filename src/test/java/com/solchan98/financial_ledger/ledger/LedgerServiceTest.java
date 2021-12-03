@@ -156,15 +156,14 @@ public class LedgerServiceTest {
         List<Ledger> ledgerList = new ArrayList<>();
         ledgerList.add(LedgerTemplate.makeLedger(account));
         ledgerList.add(LedgerTemplate.makeLedger(account));
-        given(ledgerRepository.findAllByAccountAndIsDeleteIsFalse(any())).willReturn(ledgerList);
-        given(account.getId()).willReturn(1L);
+        given(ledgerRepository.findAllByAccountAndIsDeleteIsFalseOrderByCreateAtDesc(any())).willReturn(ledgerList);
         // when
-        List<LedgerDto.Response> response = ledgerService.getLedgerList(account);
+        LedgerDto.ListResponse ledgerListResponse = ledgerService.getLedgerList(account);
         // then
         assertAll(
-                () -> assertEquals(2, response.size()),
-                () -> assertEquals(Status.LEDGER_OK, response.getMessage().getStatus()),
-                () -> assertEquals(LedgerContent.GET_LEDGER_LIST_BY_DATE_OK, response.getMessage().getMsg())
+                () -> assertEquals(2, ledgerListResponse.getData().size()),
+                () -> assertEquals(Status.LEDGER_OK, ledgerListResponse.getMessage().getStatus()),
+                () -> assertEquals(LedgerContent.GET_LEDGER_LIST_OK, ledgerListResponse.getMessage().getMsg())
         );
     }
 

@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -36,18 +35,16 @@ public class LedgerController {
 
     @GetMapping("/{ledgerId}")
     public LedgerDto.Response getLedger(@PathVariable Long ledgerId) {
-//        return ledgerService.getLedger(AccountUtil.getAccount(), ledgerId);
-        return null;
+        return ledgerService.getLedger(AccountUtil.getAccount(), ledgerId);
     }
 
-    @GetMapping("/{ledgerId}")
-    public List<LedgerDto.SimpleResponse> getLedgerList() {
-//        return ledgerService.getLedgerList(AccountUtil.getAccount());
-        return null;
+    @GetMapping("/")
+    public LedgerDto.ListResponse getLedgerList() {
+        return ledgerService.getLedgerList(AccountUtil.getAccount());
     }
 
-    @GetMapping("")
-    public List<LedgerDto.SimpleResponse> getLedgerListByDate(@RequestParam String date) {
+    @GetMapping("/date/{date}")
+    public List<LedgerDto.SimpleResponse> getLedgerListByDate(@PathVariable String date) {
 //        return ledgerService.getLedgerListByDate(AccountUtil.getAccount(), date);
         return null;
     }
