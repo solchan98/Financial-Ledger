@@ -11,4 +11,11 @@ public class AccountContent {
     public static final String SIGN_UP_EMAIL_INVALID = "이메일 형식을 확인해주세요.";
     public static final String SIGN_UP_EMAIL_DUPLICATE = "이미 가입된 이메일입니다.";
     public static final String SIGN_UP_PASSWORD_INVALID = "비밀번호를 확인해주세요.";
+    public static final String LOGIN_UP_INVALID = "아이디와 비밀번호를 확인해주세요.";
+    public static final String USER_NOT_FOUND = "회원이 존재하지 않습니다.";
+
+    public static final String EXPIRED_TOKEN = "토큰이 만료되었습니다.";
+    public static final String MALFORMED_TOKEN = "JWT가 아닙니다. 토큰을 확인해주세요.";
+    public static final String EMPTY_TOKEN = "로그인이 필요합니다. 요청 토큰을 확인해주세요.";
+    public static final String LOGOUT_OK = "성공적으로 로그아웃 되었습니다.";
 }
