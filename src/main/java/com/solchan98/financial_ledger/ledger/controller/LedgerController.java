@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/ledger")
@@ -43,9 +41,9 @@ public class LedgerController {
         return ledgerService.getLedgerList(AccountUtil.getAccount());
     }
 
-    @GetMapping("/date/{date}")
-    public List<LedgerDto.SimpleResponse> getLedgerListByDate(@PathVariable String date) {
-//        return ledgerService.getLedgerListByDate(AccountUtil.getAccount(), date);
-        return null;
+    @GetMapping("/date")
+    public LedgerDto.ListResponse getLedgerListByDate(
+            @RequestParam("year") int year, @RequestParam("month") int month) {
+        return ledgerService.getLedgerListByDate(AccountUtil.getAccount(), year, month);
     }
 }

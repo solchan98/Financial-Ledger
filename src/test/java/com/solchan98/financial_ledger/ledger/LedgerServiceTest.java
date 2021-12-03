@@ -19,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.DateTimeException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -168,11 +169,11 @@ public class LedgerServiceTest {
     }
 
     @Test
-    @DisplayName("가계부 년,월 기준 전체 내역 조회 성공")
-    void getLedGerListByDateSuccess() {
+    @DisplayName("가계부 년,월 기준 전체 내역 조회 실패 - 날짜 오류")
+    void getLedGerListByDateFail() {
         // given
-        // when
-        //then
+        // when then
+        assertThrows(DateTimeException.class, () -> ledgerService.getLedgerListByDate(account, 2021, 0));
     }
 
 

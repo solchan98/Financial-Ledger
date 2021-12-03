@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +25,14 @@ import java.util.stream.Collectors;
 public class LedgerService {
 
     private final LedgerRepository ledgerRepository;
+
+    @Transactional(readOnly = true)
+    public LedgerDto.ListResponse getLedgerListByDate(Account account, int year, int month) {
+        List<LocalDate> dateList = calculateStartAndEndDate(year, month);
+        List<Ledger> ledgerList = ledgerRepository
+                .findAllByAccountAndIsDeleteIsFalseAndWriteAtBetween(account, dateList.get(0), dateList.get(1));
+        return makeLedgerResponseList(ledgerList);
+    }
 
     @Transactional(readOnly = true)
     public LedgerDto.ListResponse getLedgerList(Account account) {
@@ -109,5 +119,13 @@ public class LedgerService {
         List<LedgerDto.SimpleResponse> ledgerResponseList = ledgerList.stream()
                 .map(LedgerDto.SimpleResponse::getLedgerSimpleResponse).collect(Collectors.toList());
         return LedgerDto.ListResponse.getLedgerSimpleResponse(ledgerResponseList);
+    }
+
+    private List<LocalDate> calculateStartAndEndDate(int year, int month) {
+        List<LocalDate> dateList = new ArrayList<>();
+        LocalDate startDate = LocalDate.of(year, month, 1).minusDays(1);
+        LocalDate endDate = LocalDate.of(year, month, 1).plusMonths(1);
+        dateList.add(startDate); dateList.add(endDate);
+        return dateList;
     }
 }
