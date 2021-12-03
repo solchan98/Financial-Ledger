@@ -39,4 +39,20 @@ public class LedgerDto {
                     .build();
         }
     }
+
+    @Getter
+    @Builder
+    public static class SimpleResponse {
+        private Long id;
+        private String content;
+        private Long price;
+
+        public static LedgerDto.SimpleResponse getLedgerSimpleResponse(Ledger ledger) {
+            return SimpleResponse.builder()
+                    .id(ledger.getId())
+                    .content(ledger.getContent())
+                    .price(ledger.getPrice())
+                    .build();
+        }
+    }
 }

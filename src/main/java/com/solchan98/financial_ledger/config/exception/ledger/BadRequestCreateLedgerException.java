@@ -5,10 +5,10 @@ import com.solchan98.financial_ledger.config.content.LedgerContent;
 import lombok.Getter;
 
 @Getter
-public class BadRequestLedgerException extends RuntimeException{
+public class BadRequestCreateLedgerException extends RuntimeException{
     private final Status status;
-    public BadRequestLedgerException(){
-        super(LedgerContent.LEDGER_BAD_REQUEST);
-        this.status = Status.LEDGER_BAD_REQUEST;
+    public BadRequestCreateLedgerException(){
+        super(LedgerContent.CREATE_LEDGER_BAD_REQUEST);
+        this.status = Status.CREATE_LEDGER_BAD_REQUEST;
     }
 }

@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class LedgerExceptionHandler {
 
+    @ExceptionHandler(BadRequestCreateLedgerException.class)
+    public ResponseEntity<Message> handle(BadRequestCreateLedgerException e){
+        Message message = Message.builder().msg(e.getMessage()).status(e.getStatus()).build();
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(BadRequestLedgerException.class)
     public ResponseEntity<Message> handle(BadRequestLedgerException e){
         Message message = Message.builder().msg(e.getMessage()).status(e.getStatus()).build();
