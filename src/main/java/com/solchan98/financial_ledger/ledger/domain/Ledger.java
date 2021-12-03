@@ -5,7 +5,6 @@ import com.solchan98.financial_ledger.trashBasketHistory.domain.TrashBasketHisto
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.w3c.dom.Text;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -55,6 +54,11 @@ public class Ledger {
     public void addTrashBasket(TrashBasketHistory history) {
         this.historyList.add(history);
         history.addLedger(this);
+    }
+
+    public void updateLedger(String content, Long price) {
+        this.content = content;
+        this.price = price;
     }
 
     public void deleteLedger() {

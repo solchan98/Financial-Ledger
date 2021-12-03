@@ -26,6 +26,7 @@ import static org.mockito.BDDMockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
+@DisplayName("가계부 내역 서비스 로직 테스트")
 public class LedgerServiceTest {
 
     @Mock
@@ -50,7 +51,7 @@ public class LedgerServiceTest {
         assertAll(
                 () ->assertEquals(requestLedger.getContent(), savedLedger.getContent()),
                 () ->assertEquals(requestLedger.getPrice(), savedLedger.getPrice()),
-                () -> assertEquals(Status.CREATE_LEDGER_OK, savedLedger.getMessage().getStatus())
+                () -> assertEquals(Status.LEDGER_OK, savedLedger.getMessage().getStatus())
         );
     }
 

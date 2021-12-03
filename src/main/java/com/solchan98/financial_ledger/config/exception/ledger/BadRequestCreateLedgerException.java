@@ -8,7 +8,7 @@ import lombok.Getter;
 public class BadRequestCreateLedgerException extends RuntimeException{
     private final Status status;
     public BadRequestCreateLedgerException(){
-        super(LedgerContent.CREATE_LEDGER_BAD_REQUEST);
-        this.status = Status.CREATE_LEDGER_BAD_REQUEST;
+        super(LedgerContent.LEDGER_DATA_BAD_REQUEST);
+        this.status = Status.LEDGER_BAD_REQUEST;
     }
 }

@@ -21,6 +21,19 @@ public class LedgerService {
 
     private final LedgerRepository ledgerRepository;
 
+    @Transactional
+    public LedgerDto.Response updateLedger(Account account, LedgerDto.UpdateRequest request) {
+        Ledger ledger = ledgerRepository.findByIdAndIsDeleteIsFalse(request.getId())
+                .orElseThrow(BadRequestLedgerException::new);
+        checkLedGerIsMine(account, ledger);
+        checkRequestLedgerData(request.getContent(), request.getPrice());
+        ledger.updateLedger(request.getContent(), request.getPrice());
+        Ledger updatedLedger = ledgerRepository.save(ledger);
+        Message message = Message.builder().msg(LedgerContent.UPDATE_LEDGER_OK).status(Status.LEDGER_OK).build();
+        return LedgerDto.Response.getLedgerResponse(updatedLedger, message);
+    }
+
+    @Transactional
     public LedgerDto.Response restoreLedger(Account account, Long ledGerId) {
         Ledger ledger = ledgerRepository.findByIdAndIsDeleteIsTrue(ledGerId)
                 .orElseThrow(BadRequestLedgerException::new);
@@ -47,10 +60,10 @@ public class LedgerService {
 
     @Transactional
     public LedgerDto.Response createLedger(LedgerDto.Request request, Account account) {
-        checkCreateLedgerData(request.getContent(), request.getPrice());
+        checkRequestLedgerData(request.getContent(), request.getPrice());
         Ledger ledger = makeLedger(account, request.getContent(), request.getPrice());
         Ledger savedLedger = ledgerRepository.save(ledger);
-        Message message = Message.builder().msg(LedgerContent.CREATE_LEDGER_OK).status(Status.CREATE_LEDGER_OK).build();
+        Message message = Message.builder().msg(LedgerContent.CREATE_LEDGER_OK).status(Status.LEDGER_OK).build();
         return LedgerDto.Response.getLedgerResponse(savedLedger, message);
     }
 
@@ -62,7 +75,7 @@ public class LedgerService {
         return Ledger.builder().account(account).content(content).price(price).build();
     }
 
-    private void checkCreateLedgerData(String content, Long price) {
+    private void checkRequestLedgerData(String content, Long price) {
         if(content.isEmpty() || price < 0L) {
             throw new BadRequestCreateLedgerException();
         }
