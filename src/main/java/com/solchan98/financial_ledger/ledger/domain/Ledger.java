@@ -2,7 +2,10 @@ package com.solchan98.financial_ledger.ledger.domain;
 
 import com.solchan98.financial_ledger.account.domain.Account;
 import com.solchan98.financial_ledger.trashBasketHistory.domain.TrashBasketHistory;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.w3c.dom.Text;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Getter
-
+@NoArgsConstructor
 public class Ledger {
 
     @Id
@@ -29,6 +32,7 @@ public class Ledger {
 
     private Long price;
 
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     private Boolean isDelete;
@@ -36,4 +40,22 @@ public class Ledger {
     private LocalDateTime createAt;
 
     private LocalDateTime updateAt;
+
+    @Builder
+    public Ledger(Account account, String content, Long price) {
+        this.account = account;
+        this.writeAt = LocalDate.now();
+        this.price = price;
+        this.content = content;
+        this.isDelete = false;
+        this.createAt = LocalDateTime.now();
+        this.updateAt = LocalDateTime.now();
+    }
+
+    public void deleteAccount() {
+        this.isDelete = true;
+    }
+    public void restoreAccount() {
+        this.isDelete = false;
+    }
 }
