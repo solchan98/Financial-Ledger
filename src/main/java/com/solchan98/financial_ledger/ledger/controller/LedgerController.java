@@ -26,13 +26,24 @@ public class LedgerController {
         return ResponseEntity.ok().body(message);
     }
 
-    @GetMapping("/restore/{ledgerId}")
-    public LedgerDto.Response restoreLedger(@PathVariable Long ledgerId) {
-        return ledgerService.restoreLedger(AccountUtil.getAccount(), ledgerId);
-    }
-
     @PatchMapping("/")
     public LedgerDto.Response updateLedger(@RequestBody LedgerDto.UpdateRequest request) {
         return ledgerService.updateLedger(AccountUtil.getAccount(), request);
+    }
+
+    @GetMapping("/{ledgerId}")
+    public LedgerDto.Response getLedger(@PathVariable Long ledgerId) {
+        return ledgerService.getLedger(AccountUtil.getAccount(), ledgerId);
+    }
+
+    @GetMapping("/")
+    public LedgerDto.ListResponse getLedgerList() {
+        return ledgerService.getLedgerList(AccountUtil.getAccount());
+    }
+
+    @GetMapping("/date")
+    public LedgerDto.ListResponse getLedgerListByDate(
+            @RequestParam("year") int year, @RequestParam("month") int month) {
+        return ledgerService.getLedgerListByDate(AccountUtil.getAccount(), year, month);
     }
 }

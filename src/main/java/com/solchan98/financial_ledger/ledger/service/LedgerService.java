@@ -15,11 +15,39 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class LedgerService {
 
     private final LedgerRepository ledgerRepository;
+
+    @Transactional(readOnly = true)
+    public LedgerDto.ListResponse getLedgerListByDate(Account account, int year, int month) {
+        List<LocalDate> dateList = calculateStartAndEndDate(year, month);
+        List<Ledger> ledgerList = ledgerRepository
+                .findAllByAccountAndIsDeleteIsFalseAndWriteAtBetween(account, dateList.get(0), dateList.get(1));
+        return makeLedgerResponseList(ledgerList);
+    }
+
+    @Transactional(readOnly = true)
+    public LedgerDto.ListResponse getLedgerList(Account account) {
+        List<Ledger> ledgerList = ledgerRepository.findAllByAccountAndIsDeleteIsFalseOrderByCreateAtDesc(account);
+        return makeLedgerResponseList(ledgerList);
+    }
+
+    @Transactional(readOnly = true)
+    public LedgerDto.Response getLedger(Account account, Long ledgerId) {
+        Ledger ledger = ledgerRepository.findByIdAndIsDeleteIsFalse(ledgerId)
+                .orElseThrow(BadRequestLedgerException::new);
+        checkLedGerIsMine(account, ledger);
+        Message message = Message.builder().msg(LedgerContent.GET_LEDGER_OK).status(Status.LEDGER_OK).build();
+        return LedgerDto.Response.getLedgerResponse(ledger, message);
+    }
 
     @Transactional
     public LedgerDto.Response updateLedger(Account account, LedgerDto.UpdateRequest request) {
@@ -34,8 +62,8 @@ public class LedgerService {
     }
 
     @Transactional
-    public LedgerDto.Response restoreLedger(Account account, Long ledGerId) {
-        Ledger ledger = ledgerRepository.findByIdAndIsDeleteIsTrue(ledGerId)
+    public LedgerDto.Response restoreLedger(Account account, Long ledgerId) {
+        Ledger ledger = ledgerRepository.findByIdAndIsDeleteIsTrue(ledgerId)
                 .orElseThrow(BadRequestLedgerException::new);
         checkLedGerIsMine(account, ledger);
         ledger.restoreLedger();
@@ -47,8 +75,8 @@ public class LedgerService {
     }
 
     @Transactional
-    public Message deleteLedger(Account account, Long ledGerId) {
-        Ledger ledger = ledgerRepository.findByIdAndIsDeleteIsFalse(ledGerId)
+    public Message deleteLedger(Account account, Long ledgerId) {
+        Ledger ledger = ledgerRepository.findByIdAndIsDeleteIsFalse(ledgerId)
                 .orElseThrow(BadRequestLedgerException::new);
         checkLedGerIsMine(account, ledger);
         ledger.deleteLedger();
@@ -85,5 +113,19 @@ public class LedgerService {
         if(!account.getId().equals(ledger.getAccount().getId())) {
             throw new BadRequestLedgerException();
         }
+    }
+
+    private LedgerDto.ListResponse makeLedgerResponseList(List<Ledger> ledgerList) {
+        List<LedgerDto.SimpleResponse> ledgerResponseList = ledgerList.stream()
+                .map(LedgerDto.SimpleResponse::getLedgerSimpleResponse).collect(Collectors.toList());
+        return LedgerDto.ListResponse.getLedgerSimpleResponse(ledgerResponseList);
+    }
+
+    private List<LocalDate> calculateStartAndEndDate(int year, int month) {
+        List<LocalDate> dateList = new ArrayList<>();
+        LocalDate startDate = LocalDate.of(year, month, 1).minusDays(1);
+        LocalDate endDate = LocalDate.of(year, month, 1).plusMonths(1);
+        dateList.add(startDate); dateList.add(endDate);
+        return dateList;
     }
 }

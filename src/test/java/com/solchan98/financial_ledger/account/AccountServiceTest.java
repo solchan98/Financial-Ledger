@@ -21,7 +21,7 @@ import static org.mockito.BDDMockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("유저 서비스로직 테스트")
+@DisplayName("유저 서비스 로직 테스트")
 public class AccountServiceTest {
 
     @Mock
