@@ -25,4 +25,10 @@ public class LedgerController {
         Message message = ledgerService.deleteLedger(AccountUtil.getAccount(), ledgerId);
         return ResponseEntity.ok().body(message);
     }
+
+    @GetMapping("/restore/{ledgerId}")
+    public LedgerDto.Response restoreLedger(@PathVariable Long ledgerId) {
+//        ledgerService.restoreLedger();
+        return null;
+    }
 }

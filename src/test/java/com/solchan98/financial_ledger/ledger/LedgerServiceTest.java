@@ -101,5 +101,34 @@ public class LedgerServiceTest {
         assertThrows(BadRequestLedgerException.class, () -> ledgerService.deleteLedger(account, ledger.getId()));
     }
 
+    @Test
+    @DisplayName("가계부 내역 복구 성공")
+    void restoreLedGerSuccess() {
+        // given
+        Ledger ledger = LedgerTemplate.makeLedger(account);
+        given(ledgerRepository.findByIdAndIsDeleteIsTrue(any())).willReturn(Optional.ofNullable(ledger));
+        given(account.getId()).willReturn(1L);
+        // when
+        Message message = ledgerService.restoreLedger(account, ledger.getId());
+        // then
+        assertAll(
+                () -> assertEquals(Status.RESTORE_LEDGER_OK, message.getStatus()),
+                () -> assertEquals(LedgerContent.RESTORE_LEDGER_OK, message.getMsg())
+        );
+    }
+
+    @Test
+    @DisplayName("가계부 내역 복구 실패 - 잘못된 내역 ID")
+    void restoreLedGerFailByInvalidLedgerId() {
+        // given
+        Account account2 = mock(Account.class);
+        Ledger ledger = LedgerTemplate.makeLedger(account2);
+        given(ledgerRepository.findByIdAndIsDeleteIsFalse(any())).willReturn(Optional.ofNullable(ledger));
+        given(account.getId()).willReturn(1L);
+        given(account2.getId()).willReturn(2L);
+        // when then
+        assertThrows(BadRequestLedgerException.class, () -> ledgerService.restoreLedger(account, ledger.getId()));
+    }
+
 
 }
