@@ -15,7 +15,7 @@ public class LedgerController {
 
     private final LedgerService ledgerService;
 
-    @PostMapping("")
+    @PostMapping("/")
     public LedgerDto.Response createLedger(@RequestBody LedgerDto.Request request) {
         return ledgerService.createLedger(request, AccountUtil.getAccount());
     }
@@ -29,5 +29,10 @@ public class LedgerController {
     @GetMapping("/restore/{ledgerId}")
     public LedgerDto.Response restoreLedger(@PathVariable Long ledgerId) {
         return ledgerService.restoreLedger(AccountUtil.getAccount(), ledgerId);
+    }
+
+    @PatchMapping("/")
+    public LedgerDto.Response updateLedger(@RequestBody LedgerDto.UpdateRequest request) {
+        return ledgerService.updateLedger(AccountUtil.getAccount(), request);
     }
 }
