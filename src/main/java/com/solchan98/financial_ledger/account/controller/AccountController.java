@@ -1,12 +1,12 @@
 package com.solchan98.financial_ledger.account.controller;
 
-import com.solchan98.financial_ledger.account.domain.UserAccount;
 import com.solchan98.financial_ledger.account.domain.dto.Login;
 import com.solchan98.financial_ledger.account.domain.dto.SignUp;
 import com.solchan98.financial_ledger.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,9 +25,9 @@ public class AccountController {
         return accountService.login(request);
     }
 
-    @GetMapping("/test")
-    public String test() {
-        UserAccount principal = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return principal.getAccount().getEmail();
+    @GetMapping("/refresh/{email}")
+    public Login.RefreshToken getNewRefresh(@PathVariable String email, HttpServletRequest request) {
+        String refreshToken = request.getHeader("refreshToken");
+        return accountService.getNewRefresh(email, refreshToken);
     }
 }

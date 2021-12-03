@@ -33,5 +33,11 @@ public class AccountExceptionHandler {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(RefreshTokenBadRequestException.class)
+    public ResponseEntity<ErrorMessage> handle(RefreshTokenBadRequestException e){
+        ErrorMessage message = ErrorMessage.builder().msg(e.getMessage()).status(e.getStatus()).build();
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
 
 }
