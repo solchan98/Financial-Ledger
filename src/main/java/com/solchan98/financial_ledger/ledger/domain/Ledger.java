@@ -59,6 +59,7 @@ public class Ledger {
     public void updateLedger(String content, Long price) {
         this.content = content;
         this.price = price;
+        this.updateAt = LocalDateTime.now();
     }
 
     public void deleteLedger() {
