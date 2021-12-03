@@ -26,4 +26,12 @@ public class AccountExceptionHandler {
         ErrorMessage message = ErrorMessage.builder().msg(e.getMessage()).status(e.getStatus()).build();
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(LoginBadRequestException.class)
+    public ResponseEntity<ErrorMessage> handle(LoginBadRequestException e){
+        ErrorMessage message = ErrorMessage.builder().msg(e.getMessage()).status(e.getStatus()).build();
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+
 }
