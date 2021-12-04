@@ -1,6 +1,6 @@
-# PayHere Assignment
+# Financial-Ledger
 
-PayHere 과제 가계부 프로젝트입니다.
+가계부 프로젝트입니다.
 
 ## Project Info
 
