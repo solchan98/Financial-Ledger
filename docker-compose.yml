@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: payhere
+      MYSQL_DATABASE: payhere
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - 63790:6379
+    depends_on:
+      - mysql
+  pay-here:
+    image: solchan98/pay-here:latest
+    container_name: pay-here
+    ports:
+      - 8080:8080
+    depends_on:
+      - redis 
