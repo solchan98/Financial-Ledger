@@ -26,6 +26,11 @@ public class LedgerController {
         return ResponseEntity.ok().body(message);
     }
 
+    @PatchMapping("/restore/{ledgerId}")
+    public LedgerDto.Response restoreLedger(@PathVariable Long ledgerId) {
+        return ledgerService.restoreLedger(AccountUtil.getAccount(), ledgerId);
+    }
+
     @PatchMapping("/")
     public LedgerDto.Response updateLedger(@RequestBody LedgerDto.UpdateRequest request) {
         return ledgerService.updateLedger(AccountUtil.getAccount(), request);
