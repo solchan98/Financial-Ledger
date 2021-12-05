@@ -47,7 +47,7 @@ public class AccountServiceTest {
         assertAll(
                 () ->assertEquals(account.getEmail(), signUpResponse.getEmail()),
                 () ->assertEquals(account.getName(), signUpResponse.getName()),
-                () -> assertEquals(Status.SIGN_UP_OK, signUpResponse.getStatus())
+                () -> assertEquals(Status.SIGN_UP_OK, signUpResponse.getMessage().getStatus())
         );
     }
 
