@@ -1,6 +1,5 @@
-package com.solchan98.financial_ledger.config.exception;
+package com.solchan98.financial_ledger.config;
 
-import com.solchan98.financial_ledger.config.Status;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -1,7 +1,7 @@
 package com.solchan98.financial_ledger.trashBasketHistory.controller;
 
 import com.solchan98.financial_ledger.account.util.AccountUtil;
-import com.solchan98.financial_ledger.trashBasketHistory.domain.dto.HistoryResponse;
+import com.solchan98.financial_ledger.trashBasketHistory.domain.dto.HistoryDto;
 import com.solchan98.financial_ledger.trashBasketHistory.service.TrashBasketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,17 +18,17 @@ public class TrashBasketController {
     private final TrashBasketService trashBasketService;
 
     @GetMapping("/restore-all/")
-    public List<HistoryResponse> getRestoreLedgerList() {
+    public HistoryDto getRestoreLedgerList() {
         return trashBasketService.getRestoreHistoryList(AccountUtil.getAccount());
     }
 
     @GetMapping("/delete-all/")
-    public List<HistoryResponse> getDeleteLedgerList() {
+    public HistoryDto getDeleteLedgerList() {
         return trashBasketService.getDeleteHistoryList(AccountUtil.getAccount());
     }
 
     @GetMapping("")
-    public List<HistoryResponse> getTrashLedgerList() {
+    public HistoryDto getTrashLedgerList() {
         return trashBasketService.getLedgerHistoryList(AccountUtil.getAccount());
     }
 

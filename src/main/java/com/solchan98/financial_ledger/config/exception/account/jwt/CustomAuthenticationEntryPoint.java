@@ -3,7 +3,7 @@ package com.solchan98.financial_ledger.config.exception.account.jwt;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solchan98.financial_ledger.config.Status;
-import com.solchan98.financial_ledger.config.exception.Message;
+import com.solchan98.financial_ledger.config.Message;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;

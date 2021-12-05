@@ -3,7 +3,7 @@ package com.solchan98.financial_ledger.account.domain.dto;
 import com.solchan98.financial_ledger.account.domain.Account;
 import com.solchan98.financial_ledger.config.Status;
 import com.solchan98.financial_ledger.config.content.AccountContent;
-import com.solchan98.financial_ledger.config.exception.Message;
+import com.solchan98.financial_ledger.config.Message;
 import lombok.Builder;
 import lombok.Getter;
 

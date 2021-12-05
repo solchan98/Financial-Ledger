@@ -5,7 +5,7 @@ import com.solchan98.financial_ledger.ledger.domain.dto.LedgerDto;
 import com.solchan98.financial_ledger.trashBasketHistory.domain.HistoryType;
 import com.solchan98.financial_ledger.trashBasketHistory.domain.TrashBasketHistory;
 import com.solchan98.financial_ledger.trashBasketHistory.domain.TrashBasketHistoryRepository;
-import com.solchan98.financial_ledger.trashBasketHistory.domain.dto.HistoryResponse;
+import com.solchan98.financial_ledger.trashBasketHistory.domain.dto.HistoryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,29 +20,30 @@ public class TrashBasketService {
     private final TrashBasketHistoryRepository trashBasketHistoryRepository;
 
     @Transactional(readOnly = true)
-    public List<HistoryResponse> getLedgerHistoryList(Account account) {
+    public HistoryDto getLedgerHistoryList(Account account) {
         List<TrashBasketHistory> historyList = trashBasketHistoryRepository.findAllByLedgerAccount(account);
-        return makeHistoryResponseList(historyList);
+        return makeHistoryResponseDto(historyList);
     }
 
     @Transactional(readOnly = true)
-    public List<HistoryResponse> getRestoreHistoryList(Account account) {
+    public HistoryDto getRestoreHistoryList(Account account) {
         List<TrashBasketHistory> historyList = trashBasketHistoryRepository.findAllByLedgerAccountAndType(account, HistoryType.RECOVERY);
-        return makeHistoryResponseList(historyList);
+        return makeHistoryResponseDto(historyList);
     }
 
     @Transactional(readOnly = true)
-    public List<HistoryResponse> getDeleteHistoryList(Account account) {
+    public HistoryDto getDeleteHistoryList(Account account) {
         List<TrashBasketHistory> historyList = trashBasketHistoryRepository.findAllByLedgerAccountAndType(account, HistoryType.DELETE);
-        return makeHistoryResponseList(historyList);
+        return makeHistoryResponseDto(historyList);
     }
 
-    private List<HistoryResponse> makeHistoryResponseList(List<TrashBasketHistory> history) {
-        return history.stream().map(x ->
-                HistoryResponse.builder()
+    private HistoryDto makeHistoryResponseDto(List<TrashBasketHistory> history) {
+        List<HistoryDto.HistoryResponse> historyList = history.stream().map(x ->
+                HistoryDto.HistoryResponse.builder()
                         .history(x)
                         .ledger(LedgerDto.SimpleResponse.getLedgerSimpleResponse(x.getLedger()))
                         .build()).collect(Collectors.toList());
+        return HistoryDto.getHistoryDto(historyList);
     }
 
 }

@@ -3,7 +3,7 @@ package com.solchan98.financial_ledger.ledger.service;
 import com.solchan98.financial_ledger.account.domain.Account;
 import com.solchan98.financial_ledger.config.Status;
 import com.solchan98.financial_ledger.config.content.LedgerContent;
-import com.solchan98.financial_ledger.config.exception.Message;
+import com.solchan98.financial_ledger.config.Message;
 import com.solchan98.financial_ledger.config.exception.ledger.BadRequestCreateLedgerException;
 import com.solchan98.financial_ledger.config.exception.ledger.BadRequestLedgerException;
 import com.solchan98.financial_ledger.ledger.domain.Ledger;
