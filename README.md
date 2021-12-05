@@ -2,8 +2,8 @@
 
 ### 가계부 프로젝트
 
-###[REST API 문서](https://solchan98.notion.site/Financial-Ledger-API-d96faba4d6a045359d668fe547db2709)
-###[프로젝트 설계 및 구현 설명](https://github.com/solchan98/Financial-Ledger/blob/develop/EXPLAIN.md)
+### [REST API 문서](https://solchan98.notion.site/Financial-Ledger-API-d96faba4d6a045359d668fe547db2709)
+### [프로젝트 설계 및 구현 설명](https://github.com/solchan98/Financial-Ledger/blob/develop/EXPLAIN.md)
 
 ## Project Info
 
