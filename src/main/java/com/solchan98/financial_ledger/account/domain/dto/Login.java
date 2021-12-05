@@ -2,6 +2,8 @@ package com.solchan98.financial_ledger.account.domain.dto;
 
 import com.solchan98.financial_ledger.account.domain.Account;
 import com.solchan98.financial_ledger.config.Status;
+import com.solchan98.financial_ledger.config.content.AccountContent;
+import com.solchan98.financial_ledger.config.exception.Message;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -21,7 +23,7 @@ public class Login {
         private String name;
         private String accessToken;
         private String refreshToken;
-        private Status status;
+        private Message message;
 
         public static Login.Response getLoginResponse(Account account, String accessToken, String refreshToken) {
             return Response.builder()
@@ -30,7 +32,7 @@ public class Login {
                     .email(account.getEmail())
                     .accessToken(accessToken)
                     .refreshToken(refreshToken)
-                    .status(Status.LOGIN_OK)
+                    .message(Message.builder().msg(AccountContent.LOGIN_OK).status(Status.LOGIN_OK).build())
                     .build();
         }
     }
@@ -40,12 +42,14 @@ public class Login {
     public static class RefreshToken {
         private String accessToken;
         private String refreshToken;
-        private Status status;
+        private Message message;
         public static Login.RefreshToken getNewTokenResponse(String accessToken, String refreshToken) {
             return RefreshToken.builder()
                     .accessToken(accessToken)
                     .refreshToken(refreshToken)
-                    .status(Status.REFRESH_TOKEN_REISSUE_OK)
+                    .message(Message.builder()
+                            .msg(AccountContent.TOKEN_REISSUE_OK)
+                            .status(Status.TOKEN_REISSUE_OK).build())
                     .build();
         }
     }
