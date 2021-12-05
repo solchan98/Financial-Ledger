@@ -3,6 +3,7 @@ package com.solchan98.financial_ledger.account.domain.dto;
 import com.solchan98.financial_ledger.account.domain.Account;
 import com.solchan98.financial_ledger.config.Status;
 import com.solchan98.financial_ledger.config.content.AccountContent;
+import com.solchan98.financial_ledger.config.Message;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -25,7 +26,7 @@ public class SignUp {
         private String email;
         private String name;
         private LocalDateTime loginAt;
-        private Status status;
+        private Message message;
 
         public static Response getSignUpResponse(Account account) {
             return Response.builder()
@@ -33,7 +34,7 @@ public class SignUp {
                     .name(account.getName())
                     .email(account.getEmail())
                     .loginAt(account.getLoginAt())
-                    .status(Status.SIGN_UP_OK)
+                    .message(Message.builder().msg(AccountContent.SIGN_UP_OK).status(Status.SIGN_UP_OK).build())
                     .build();
         }
     }

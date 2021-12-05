@@ -6,7 +6,7 @@ import com.solchan98.financial_ledger.account.service.AccountService;
 import com.solchan98.financial_ledger.account.util.AccountUtil;
 import com.solchan98.financial_ledger.config.Status;
 import com.solchan98.financial_ledger.config.content.AccountContent;
-import com.solchan98.financial_ledger.config.exception.Message;
+import com.solchan98.financial_ledger.config.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

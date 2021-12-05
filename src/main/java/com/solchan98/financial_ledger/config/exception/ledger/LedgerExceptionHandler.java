@@ -1,7 +1,7 @@
 package com.solchan98.financial_ledger.config.exception.ledger;
 
 import com.solchan98.financial_ledger.config.Status;
-import com.solchan98.financial_ledger.config.exception.Message;
+import com.solchan98.financial_ledger.config.Message;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

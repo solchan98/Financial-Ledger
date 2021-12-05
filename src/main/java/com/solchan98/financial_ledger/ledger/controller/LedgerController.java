@@ -1,7 +1,7 @@
 package com.solchan98.financial_ledger.ledger.controller;
 
 import com.solchan98.financial_ledger.account.util.AccountUtil;
-import com.solchan98.financial_ledger.config.exception.Message;
+import com.solchan98.financial_ledger.config.Message;
 import com.solchan98.financial_ledger.ledger.domain.dto.LedgerDto;
 import com.solchan98.financial_ledger.ledger.service.LedgerService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +24,11 @@ public class LedgerController {
     public ResponseEntity<Message> deleteLedger(@PathVariable Long ledgerId) {
         Message message = ledgerService.deleteLedger(AccountUtil.getAccount(), ledgerId);
         return ResponseEntity.ok().body(message);
+    }
+
+    @PatchMapping("/restore/{ledgerId}")
+    public LedgerDto.Response restoreLedger(@PathVariable Long ledgerId) {
+        return ledgerService.restoreLedger(AccountUtil.getAccount(), ledgerId);
     }
 
     @PatchMapping("/")
